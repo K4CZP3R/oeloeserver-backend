@@ -35,7 +35,6 @@ export class PlayerStatusLogic {
 
 		for (let playerName of playersName) {
 			let playerStatuses = await this.playerStatusRepository.getByPlayerName(playerName);
-			console.log("statuses", playerStatuses);
 			toReturn.push(this.getCurrentStatus(playerStatuses));
 		}
 		return { success: true, data: toReturn };

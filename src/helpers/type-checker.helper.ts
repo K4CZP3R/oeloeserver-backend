@@ -54,7 +54,6 @@ export function checkValues(
 		}
 		if (!result.success) {
 			//TODO: Something wrong with uuid check
-			// console.log("throwing!", result.message);
 			throw new Error(result.message);
 		}
 		return;
