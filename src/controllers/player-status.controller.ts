@@ -6,7 +6,7 @@ import { BaseController } from "./base.controller";
 export class PlayerStatusController extends BaseController {
 	routes: IRoute[] = [
 		{
-			path: "/user/:username",
+			path: "/:username",
 			method: "GET",
 			func: this.getByUsername.bind(this),
 		},
