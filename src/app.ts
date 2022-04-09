@@ -13,11 +13,12 @@ import { JwtSessionService } from "./services/jwt-session.service";
 import { Environment } from "./models/environment.model";
 import { AuthController } from "./controllers/auth.controller";
 import { PlayerStatusController } from "./controllers/player-status.controller";
+import { PlayerStatController } from "./controllers/player-stat.controller";
 
 export class App {
 	public app: express.Express;
 
-	private controllers: IController[] = [new AuthController(), new PlayerStatusController()];
+	private controllers: IController[] = [new AuthController(), new PlayerStatusController(), new PlayerStatController()];
 
 	constructor() {
 		this.app = express();
