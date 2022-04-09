@@ -10,6 +10,7 @@ export class PlayerStatLogic {
 		checkValues(data, { shouldContainKeys: ["playerId"] });
 
 		let stats = await this.playerStatRepository.getByPlayerId(data.playerId);
+		if (stats === null) throw new Error(`No stats found for ${data.playerId}`);
 		return { success: true, data: { playerId: data.playerId, stats: this.makeStatsReadable(stats) } };
 	}
 
