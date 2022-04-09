@@ -36,6 +36,15 @@ export function isValidUUID(input: string): IResult<undefined> {
 	return { success: result, message: result ? "That's some valid UUID!" : "Invalid UUID!" };
 }
 
+export function isValidPort(input: string): IResult<undefined> {
+	try {
+		let result = parseInt(input) >= 0 && parseInt(input) <= 65535;
+		return { success: result, message: result ? "That's valid port" : "Invalid port!" };
+	} catch (e) {
+		return { success: false, message: e };
+	}
+}
+
 export function isValidBase64(input: string): IResult<undefined> {
 	try {
 		const resp = Buffer.from(input, "base64").toString("base64") === input;

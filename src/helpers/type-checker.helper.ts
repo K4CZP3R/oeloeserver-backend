@@ -1,5 +1,5 @@
 import { IResult } from "../models/interfaces/result.interface";
-import { isAllowedUsername, isValidEmail, isValidUUID } from "./input-validator.helper";
+import { isAllowedUsername, isValidEmail, isValidPort, isValidUUID } from "./input-validator.helper";
 import { isStrongEncodedPassword, isStrongPassword } from "./password.helper";
 
 export function checkValues(
@@ -40,6 +40,10 @@ export function checkValues(
 						: { success: false, message: "Invalid data (username)" };
 				}
 				break;
+			case "port":
+				if (checkRuleChangeableValues) {
+					result = dataIn[key] ? isValidPort(dataIn[key]) : { success: false, message: "Invalid data (port)" };
+				}
 			default:
 				if (key.toLowerCase().includes("id")) {
 					result = dataIn[key] ? isValidUUID(dataIn[key]) : { success: false, message: "Invalid data (id)" };
