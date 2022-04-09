@@ -12,11 +12,12 @@ import { configToMongoUrl } from "./helpers/mongo.helper";
 import { JwtSessionService } from "./services/jwt-session.service";
 import { Environment } from "./models/environment.model";
 import { AuthController } from "./controllers/auth.controller";
+import { PlayerStatusController } from "./controllers/player-status.controller";
 
 export class App {
 	public app: express.Express;
 
-	private controllers: IController[] = [new AuthController()];
+	private controllers: IController[] = [new AuthController(), new PlayerStatusController()];
 
 	constructor() {
 		this.app = express();

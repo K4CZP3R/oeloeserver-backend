@@ -4,7 +4,7 @@ import { generateNumberBetween } from "./secure.helper";
 
 export function configToMongoUrl(databaseConfig: IDatabaseConfig) {
 	if (databaseConfig.username && databaseConfig.password) {
-		return `mongodb://${databaseConfig.username}:${databaseConfig.password}@${databaseConfig.hostname}:${databaseConfig.port}/${databaseConfig.databaseName}`;
+		return `mongodb://${databaseConfig.username}:${databaseConfig.password}@${databaseConfig.hostname}:${databaseConfig.port}/${databaseConfig.databaseName}?authSource=admin`;
 	} else {
 		return `mongodb://${databaseConfig.hostname}:${databaseConfig.port}/${databaseConfig.databaseName}`;
 	}
