@@ -5,7 +5,7 @@ import cors from "cors";
 import { IController } from "./models/interfaces/controller.interface";
 import { errorMiddleware } from "./middlewares/error.middleware";
 import { DependencyProviderService } from "./services/dependency-provider.service";
-import { JWT_SERVICE } from "./helpers/di-names.helper";
+import { JWT_SERVICE, MC_SERVER_STATUS_SERVICE } from "./helpers/di-names.helper";
 import { getEnvironment } from "./helpers/dotenv.helper";
 import { createMongooseConnection } from "./services/mongoose-connection.service";
 import { configToMongoUrl } from "./helpers/mongo.helper";
@@ -14,11 +14,18 @@ import { Environment } from "./models/environment.model";
 import { AuthController } from "./controllers/auth.controller";
 import { PlayerStatusController } from "./controllers/player-status.controller";
 import { PlayerStatController } from "./controllers/player-stat.controller";
+import { McServerStatusService } from "./services/mc-server-status.service";
+import { ServerStatusController } from "./controllers/server-status.controller";
 
 export class App {
 	public app: express.Express;
 
-	private controllers: IController[] = [new AuthController(), new PlayerStatusController(), new PlayerStatController()];
+	private controllers: IController[] = [
+		new AuthController(),
+		new PlayerStatusController(),
+		new PlayerStatController(),
+		new ServerStatusController(),
+	];
 
 	constructor() {
 		this.app = express();
@@ -52,6 +59,8 @@ export class App {
 				issuer: "KSP",
 			})
 		);
+
+		DependencyProviderService.setImpl<McServerStatusService>(MC_SERVER_STATUS_SERVICE, new McServerStatusService());
 
 		createMongooseConnection(configToMongoUrl(env.getDatabase()));
 	}
