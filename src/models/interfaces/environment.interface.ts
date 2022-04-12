@@ -5,11 +5,7 @@ export interface IEnvironment {
 	ENVIRONMENT: string;
 	SERVER_PORT: number;
 
-	DB_HOST: string;
-	DB_PORT: number;
-	DB_USER: string;
-	DB_PASS: string;
-	DB_NAME: string;
+	DB_URL: string;
 
 	JWT_KEY_PRIVATE: string;
 	JWT_KEY_PUBLIC: string;
@@ -26,11 +22,7 @@ type KeysEnum<T> = { [P in keyof Required<T>]: true };
 export const IEnvironmentKeys: KeysEnum<IEnvironment> = {
 	ENVIRONMENT: true,
 	SERVER_PORT: true,
-	DB_HOST: true,
-	DB_PORT: true,
-	DB_USER: true,
-	DB_PASS: true,
-	DB_NAME: true,
+	DB_URL: true,
 
 	JWT_KEY_PRIVATE: true,
 	JWT_KEY_PUBLIC: true,

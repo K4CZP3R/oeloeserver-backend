@@ -1,17 +1,13 @@
 import { IEnvironment } from "./interfaces/environment.interface";
 import { IDatabaseConfig } from "./interfaces/orm-database-config.interface";
-import { read, readFileSync } from "fs";
+import { readFileSync } from "fs";
 
 export class Environment {
 	constructor(public env: IEnvironment) {}
 
 	getDatabase(): IDatabaseConfig {
 		return {
-			username: this.env.DB_USER,
-			hostname: this.env.DB_HOST,
-			databaseName: this.env.DB_NAME,
-			password: this.env.DB_PASS,
-			port: this.env.DB_PORT,
+			url: this.env.DB_URL,
 		};
 	}
 

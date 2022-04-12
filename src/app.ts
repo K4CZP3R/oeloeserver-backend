@@ -61,8 +61,7 @@ export class App {
 		);
 
 		DependencyProviderService.setImpl<McServerStatusService>(MC_SERVER_STATUS_SERVICE, new McServerStatusService());
-
-		createMongooseConnection(configToMongoUrl(env.getDatabase()));
+		createMongooseConnection(env.getDatabase().url);
 	}
 
 	private setupMiddlewares() {
