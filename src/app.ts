@@ -1,11 +1,13 @@
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
+import { WebSocketServer } from "ws";
+import { WebSocket } from "ws";
 
 import { IController } from "./models/interfaces/controller.interface";
 import { errorMiddleware } from "./middlewares/error.middleware";
 import { DependencyProviderService } from "./services/dependency-provider.service";
-import { JWT_SERVICE, MC_SERVER_STATUS_SERVICE } from "./helpers/di-names.helper";
+import { JWT_SERVICE, MC_SERVER_STATUS_SERVICE, MONGO_WATCHER_SERVIER } from "./helpers/di-names.helper";
 import { getEnvironment } from "./helpers/dotenv.helper";
 import { createMongooseConnection } from "./services/mongoose-connection.service";
 import { configToMongoUrl } from "./helpers/mongo.helper";
@@ -16,6 +18,7 @@ import { PlayerStatusController } from "./controllers/player-status.controller";
 import { PlayerStatController } from "./controllers/player-stat.controller";
 import { McServerStatusService } from "./services/mc-server-status.service";
 import { ServerStatusController } from "./controllers/server-status.controller";
+import { MongoWatcherService } from "./services/mongo-watcher.service";
 
 export class App {
 	public app: express.Express;
@@ -46,6 +49,7 @@ export class App {
 		this.setupMiddlewares();
 		this.setupControllers();
 		this.setupAfterMiddlewares();
+		this.setupWs();
 	}
 
 	private setupDi(env: Environment) {
@@ -62,6 +66,8 @@ export class App {
 
 		DependencyProviderService.setImpl<McServerStatusService>(MC_SERVER_STATUS_SERVICE, new McServerStatusService());
 		createMongooseConnection(env.getDatabase().url);
+
+		DependencyProviderService.setImpl<MongoWatcherService>(MONGO_WATCHER_SERVIER, new MongoWatcherService());
 	}
 
 	private setupMiddlewares() {
@@ -73,6 +79,24 @@ export class App {
 	private setupControllers() {
 		this.controllers.forEach(controller => {
 			this.app.use(controller.path, controller.router);
+		});
+	}
+
+	private setupWs() {
+		const wss = new WebSocketServer({ port: 8080 });
+		let connections: WebSocket[] = [];
+		let watcher = DependencyProviderService.getImpl<MongoWatcherService>(MONGO_WATCHER_SERVIER);
+
+		watcher.addListener(() => {
+			connections.forEach(async ws => ws.send(JSON.stringify({ status: "new" })));
+		});
+
+		wss.on("connection", ws => {
+			connections.push(ws);
+			console.log("There are", connections.length, "connections!");
+			ws.on("close", () => {
+				connections.splice(connections.indexOf(ws), 1);
+			});
 		});
 	}
 
