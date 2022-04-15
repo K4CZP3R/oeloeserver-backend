@@ -14,7 +14,7 @@ export class PlayerStatController extends BaseController {
 	];
 
 	constructor(private playerStatLogic = new PlayerStatLogic()) {
-		super({ path: "/player/stat" });
+		super({ path: "/player/stats" });
 		this.loadRoutes();
 	}
 
