@@ -3,7 +3,7 @@ import { IResult } from "../models/interfaces/result.interface";
 import { IPlayerStat } from "../models/player-stat.model";
 import { PlayerStatRepository } from "../repositories/player-stat.repository";
 
-export class PlayerStatLogic {
+export class PlayerStatsLogic {
 	constructor(private playerStatRepository = new PlayerStatRepository()) {}
 
 	async getStatsByPlayerId(data: { playerId: string }): Promise<IResult<{ playerId: string; stats: any }>> {

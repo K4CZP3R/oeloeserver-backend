@@ -15,7 +15,7 @@ import { JwtSessionService } from "./services/jwt-session.service";
 import { Environment } from "./models/environment.model";
 import { AuthController } from "./controllers/auth.controller";
 import { PlayerStatusController } from "./controllers/player-status.controller";
-import { PlayerStatController } from "./controllers/player-stat.controller";
+import { PlayerStatsController } from "./controllers/player-stats.controller";
 import { McServerStatusService } from "./services/mc-server-status.service";
 import { ServerStatusController } from "./controllers/server-status.controller";
 import { MongoWatcherService } from "./services/mongo-watcher.service";
@@ -26,7 +26,7 @@ export class App {
 	private controllers: IController[] = [
 		new AuthController(),
 		new PlayerStatusController(),
-		new PlayerStatController(),
+		new PlayerStatsController(),
 		new ServerStatusController(),
 	];
 
@@ -90,6 +90,10 @@ export class App {
 		watcher.addListener(() => {
 			connections.forEach(async ws => ws.send(JSON.stringify({ status: "new" })));
 		});
+
+		setInterval(() => {
+			connections.forEach(async ws => ws.send(JSON.stringify({ status: "new" })));
+		}, 5000);
 
 		wss.on("connection", ws => {
 			connections.push(ws);

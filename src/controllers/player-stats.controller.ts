@@ -1,10 +1,9 @@
 import { NextFunction, Response, Request } from "express";
-import { PlayerStatLogic } from "../logic/player-stat.logic";
-import { PlayerStatusLogic } from "../logic/player-status.logic";
+import { PlayerStatsLogic } from "../logic/player-stats.logic";
 import { IRoute } from "../models/interfaces/route.interface";
 import { BaseController } from "./base.controller";
 
-export class PlayerStatController extends BaseController {
+export class PlayerStatsController extends BaseController {
 	routes: IRoute[] = [
 		{
 			path: "/:playerId",
@@ -13,7 +12,7 @@ export class PlayerStatController extends BaseController {
 		},
 	];
 
-	constructor(private playerStatLogic = new PlayerStatLogic()) {
+	constructor(private playerStatLogic = new PlayerStatsLogic()) {
 		super({ path: "/player/stats" });
 		this.loadRoutes();
 	}

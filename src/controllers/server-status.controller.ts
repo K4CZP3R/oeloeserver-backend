@@ -1,6 +1,4 @@
 import { NextFunction, Response, Request } from "express";
-import { PlayerStatLogic } from "../logic/player-stat.logic";
-import { PlayerStatusLogic } from "../logic/player-status.logic";
 import { ServerStatusLogic } from "../logic/server-status.logic";
 import { IRoute } from "../models/interfaces/route.interface";
 import { BaseController } from "./base.controller";

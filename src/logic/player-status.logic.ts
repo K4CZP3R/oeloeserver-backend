@@ -40,6 +40,16 @@ export class PlayerStatusLogic {
 		return { success: true, data: toReturn };
 	}
 
+	async getStatusOfPlayerId(data: { playerId: string }): Promise<IResult<ICurrentPlayerStatus>> {
+		checkValues(data, { shouldContainKeys: ["playerId"] });
+
+		let statuses = await this.playerStatusRepository.getByPlayerId(data.playerId);
+		if (statuses.length === 0) {
+			throw new Error("User not found!");
+		}
+
+		return { success: true, data: this.getCurrentStatus(statuses) };
+	}
 	async getStatusOfUsername(data: { username: string }): Promise<IResult<ICurrentPlayerStatus>> {
 		checkValues(data, { shouldContainKeys: ["username"] });
 
@@ -49,5 +59,10 @@ export class PlayerStatusLogic {
 		}
 
 		return { success: true, data: this.getCurrentStatus(statuses) };
+	}
+
+	async getPlayerNames(): Promise<IResult<{ playerName: string; playerId: string }[]>> {
+		let names = await this.playerStatusRepository.getPlayerNames();
+		return { success: true, data: names };
 	}
 }
