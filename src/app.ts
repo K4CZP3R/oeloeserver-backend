@@ -10,7 +10,7 @@ import { DependencyProviderService } from "./services/dependency-provider.servic
 import { JWT_SERVICE, MC_SERVER_STATUS_SERVICE, MONGO_WATCHER_SERVIER } from "./helpers/di-names.helper";
 import { getEnvironment } from "./helpers/dotenv.helper";
 import { createMongooseConnection } from "./services/mongoose-connection.service";
-import { configToMongoUrl } from "./helpers/mongo.helper";
+// import { configToMongoUrl } from "./helpers/mongo.helper";
 import { JwtSessionService } from "./services/jwt-session.service";
 import { Environment } from "./models/environment.model";
 import { AuthController } from "./controllers/auth.controller";
@@ -49,7 +49,7 @@ export class App {
 		this.setupMiddlewares();
 		this.setupControllers();
 		this.setupAfterMiddlewares();
-		this.setupWs();
+		this.setupWs(env);
 	}
 
 	private setupDi(env: Environment) {
@@ -82,8 +82,8 @@ export class App {
 		});
 	}
 
-	private setupWs() {
-		const wss = new WebSocketServer({ port: 8080 });
+	private setupWs(env: Environment) {
+		const wss = new WebSocketServer({ port: env.env.WS_SERVER_PORT });
 		let connections: WebSocket[] = [];
 		let watcher = DependencyProviderService.getImpl<MongoWatcherService>(MONGO_WATCHER_SERVIER);
 
